@@ -2,8 +2,16 @@
 
 Shared fixtures and Cypress Component Testing scenarios used by **both**
 `iotix-react` and `iotixng` to prove the two editor implementations
-behave the same. Not an npm package — each repo imports these files by
+behave the same. Not an npm package — each repo vendors this one in as a
+git submodule (at `iotix-shared-tests/`) and imports these files by
 relative path (see `cypress/component/*.cy.ts` in each repo).
+
+Pinning it as a submodule is deliberate: bumping the pinned commit in a
+consuming repo is an explicit, reviewable change (a normal PR diff on the
+submodule pointer), rather than silently picking up whatever the shared
+scenarios currently say. A change here doesn't affect either editor's
+suite until someone deliberately updates its pointer and re-runs the
+tests.
 
 ## Why this exists
 
