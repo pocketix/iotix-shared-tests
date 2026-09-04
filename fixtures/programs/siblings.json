@@ -1,0 +1,12 @@
+{
+  "block": [
+    {
+      "name": "setValue",
+      "params": ["first"]
+    },
+    {
+      "name": "setValue",
+      "params": ["second"]
+    }
+  ]
+}

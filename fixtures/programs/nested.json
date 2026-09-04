@@ -1,0 +1,14 @@
+{
+  "block": [
+    {
+      "name": "if",
+      "condition": "Temperature > 10",
+      "block": [
+        {
+          "name": "setValue",
+          "params": ["on", "off"]
+        }
+      ]
+    }
+  ]
+}

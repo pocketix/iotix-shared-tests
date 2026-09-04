@@ -1,0 +1,37 @@
+{
+  "variables": [
+    { "id": "temp", "label": "Temperature" }
+  ],
+  "statements": {
+    "if": {
+      "name": "if",
+      "component": "compound",
+      "label": "If",
+      "icon": "pi-question-circle",
+      "color": "#ffffff",
+      "backgroundColor": "#F08080",
+      "extensions": {
+        "enableCondition": true
+      }
+    },
+    "setValue": {
+      "name": "setValue",
+      "component": "cmd",
+      "label": "Set Value",
+      "icon": "pi-bolt",
+      "color": "#ffffff",
+      "backgroundColor": "#99A8D7",
+      "extensions": {
+        "params": {
+          "type": "array",
+          "defs": "string"
+        }
+      }
+    }
+  },
+  "err": {
+    "icon": "pi-times",
+    "color": "#ffffff",
+    "backgroundColor": "#FF0000"
+  }
+}

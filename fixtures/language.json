@@ -1,0 +1,62 @@
+{
+  "variables": [
+    { "id": "temp", "label": "Temperature" }
+  ],
+  "statements": {
+    "_": {
+      "name": "_",
+      "component": "cmd",
+      "label": "_",
+      "icon": "pi-circle",
+      "color": "#ffffff",
+      "backgroundColor": "#999999"
+    },
+    "if": {
+      "name": "if",
+      "component": "compound",
+      "label": "If",
+      "icon": "pi-question-circle",
+      "color": "#ffffff",
+      "backgroundColor": "#F08080",
+      "extensions": {
+        "enableCondition": true
+      }
+    },
+    "setValue": {
+      "name": "setValue",
+      "component": "cmd",
+      "label": "Set Value",
+      "icon": "pi-bolt",
+      "color": "#ffffff",
+      "backgroundColor": "#99A8D7",
+      "extensions": {
+        "params": {
+          "type": "array",
+          "defs": "string"
+        }
+      }
+    },
+    "setStruct": {
+      "name": "setStruct",
+      "component": "cmd",
+      "label": "Set Struct",
+      "icon": "pi-bolt",
+      "color": "#ffffff",
+      "backgroundColor": "#99A8D7",
+      "extensions": {
+        "params": {
+          "type": "structure",
+          "defs": [
+            { "name": "deviceName", "type": "string" },
+            { "name": "brightness", "type": "number" }
+          ]
+        }
+      }
+    }
+  },
+  "err": {
+    "icon": "pi-times",
+    "color": "#ffffff",
+    "backgroundColor": "#FF0000"
+  }
+}
