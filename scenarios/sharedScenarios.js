@@ -3,7 +3,7 @@
  *
  * These functions contain ONLY `cy.*` DOM assertions/interactions against the
  * shared ".accordion" statement shell (identical markup/classes in both
- * pocketix-react and pocketixng — see selectors.js). They know nothing about
+ * iotix-react and iotixng — see selectors.js). They know nothing about
  * React or Angular.
  *
  * Usage from a repo's own spec file:
@@ -98,7 +98,7 @@ export function togglesAccordionBody(sel) {
  * Uses `inputGroup` (the row wrapper, applied on both platforms), not
  * `inputExpr` — react's ".input-expr" CSS class is defined but never
  * actually applied to any element (dead CSS; angular's ".inputexpr" *is*
- * applied to its <pocketix-vp-expression>). See main bug report.
+ * applied to its <iotix-vp-expression>). See main bug report.
  */
 export function rendersDuplicateValuedParamsAsSeparateRows(sel) {
   cy.get(sel.expressionInput).should("have.length", 2);
