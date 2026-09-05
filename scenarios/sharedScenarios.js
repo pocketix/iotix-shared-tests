@@ -117,3 +117,56 @@ export function rendersBoundStructureParamValues(sel) {
     expect(values).to.deep.equal(["Living Room Lamp", "75"]);
   });
 }
+
+/**
+ * Regression guard for the expression dialog's syntax check being a no-op:
+ * opens the dialog, types a malformed expression, and asserts the error
+ * state actually gets set (error class on the textarea + disabled OK
+ * button) instead of the already-wired styling staying permanently inert.
+ */
+export function flagsSyntaxErrorAndDisablesOk(sel, expressionString) {
+  cy.get(sel.expressionEllipsisButton).click({ force: true });
+  cy.get(sel.expressionDialogTextarea).should("be.visible").clear().type(expressionString, { delay: 0 });
+
+  cy.get(sel.expressionDialogTextarea).should("have.class", "error");
+  cy.contains("button", /^ok$/i).should("be.disabled");
+}
+
+/** Counterpart to flagsSyntaxErrorAndDisablesOk: a well-formed expression must not be flagged. */
+export function acceptsWellFormedExpression(sel, expressionString) {
+  cy.get(sel.expressionEllipsisButton).click({ force: true });
+  cy.get(sel.expressionDialogTextarea).should("be.visible").clear().type(expressionString, { delay: 0 });
+
+  cy.get(sel.expressionDialogTextarea).should("not.have.class", "error");
+  cy.contains("button", /^ok$/i).should("not.be.disabled");
+}
+
+/**
+ * Regression guard for structure-type command params being edited but not
+ * propagated: typing a new value into a bound structure param must round-trip
+ * all the way out through onProgramChange, not just update some local/
+ * uncontrolled copy. `commit` performs whatever repo-specific action
+ * finalizes the edit (React needs a blur, Angular needs to wait out its
+ * debounce) - everything else is identical on both platforms.
+ */
+export function editsStructureParamAndEmitsProgramChange(sel, { paramIndex = 1, value, commit }) {
+  cy.get(sel.expressionInput).eq(paramIndex).clear().type(value, { delay: 0 });
+  commit();
+
+  cy.get("@onProgramChange").should("have.been.called");
+  cy.get("@onProgramChange").should((stub) => {
+    const emitted = stub.lastCall.args[0];
+    expect(emitted.block[0].params[paramIndex]).to.equal(value);
+  });
+}
+
+/**
+ * Regression guard for "mobile-responsive default state inverted between
+ * platforms": on a phone-sized viewport, the visual editor pane must be the
+ * one shown by default, with the text editor pane hidden - the two editors
+ * used to disagree on which pane defaults to open.
+ */
+export function showsVisualPaneHidesTextPaneByDefault() {
+  cy.get(".visual-editor").should("have.class", "mobile-open");
+  cy.get(".text-editor").should("not.have.class", "mobile-open");
+}

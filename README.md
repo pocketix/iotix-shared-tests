@@ -100,10 +100,15 @@ friction found along the way:
 - Remove button deletes a statement.
 - Accordion header click toggles open/closed.
 - Duplicate-valued params still render as separate rows.
+- Renders bound values for structure-type command params.
+- Expression dialog flags a malformed expression / accepts a well-formed one.
+- Editing a structure-type param propagates out through onProgramChange.
+- Mobile-responsive default: visual editor pane shown, text editor pane
+  hidden.
 
 Not yet covered (left for follow-up, see main bug report for the underlying
 bugs each of these would pin down): program hot-swap after mount, undo/redo,
-manual-sync save flow, expression dialog editing, "structure"-type params,
-text-editor JSON round-trip. These need either a richer per-repo mount
-helper (undo/redo, manual sync) or accept that the current implementations
-are broken and should be written as failing/skipped tests until fixed.
+manual-sync save flow, text-editor JSON round-trip. These need either a
+richer per-repo mount helper (undo/redo, manual sync) or accept that the
+current implementations are broken and should be written as failing/skipped
+tests until fixed.

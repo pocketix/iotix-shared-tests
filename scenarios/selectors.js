@@ -23,6 +23,8 @@ export const common = {
   addStatementButton: ".block > .p-button, .block > button",
   recommendationItem: ".recommendation-item",
   expressionInput: "input.input-field",
+  expressionEllipsisButton: ".pi-ellipsis-h",
+  expressionDialogTextarea: ".text-area",
 };
 
 // Cosmetic class-name divergences between the two implementations
