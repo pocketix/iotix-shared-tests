@@ -44,15 +44,28 @@ Sharing the fixtures and the assertion logic means both suites exercise
   uses **identical class names** on both platforms — verified by reading
   both `.css` files. A few nested classes differ cosmetically
   (`.input-group` vs `.inputgroup`); those live under `perRepo`.
-- `scenarios/sharedScenarios.js` — pure `cy.*` assertion functions, with zero
-  React/Angular-specific code. Each repo's spec file does its own
-  framework-specific `cy.mount(...)` and then calls into these functions.
+- `scenarios/sharedScenarios.js` — pure `cy.*` assertion functions for
+  Cypress Component Testing, with zero React/Angular-specific code. Each
+  repo's spec file does its own framework-specific `cy.mount(...)` and then
+  calls into these functions.
+- `scenarios/sharedE2EScenarios.js` — the E2E equivalent: pure `cy.*`
+  scenarios run against each repo's real running demo app (`cy.visit`, not
+  `cy.mount`), driving the visual and text editor panes directly. Each
+  repo's spec file does its own `cy.visit("/")` and supplies the one thing
+  that still differs between the two demos — the add-statement dialog's
+  confirm-button label ("Add" on iotix-react, "Ok" on iotixng) — then calls
+  into these functions. Deliberately never clicks the "Evaluate" trigger
+  button, since that hits an external backend outside either repo's scope;
+  the visual/text editor panes' round-trip JSON is the ground truth instead.
 
 ## Running the tests
 
 ```
 cd iotix-react && npm run test:component   # builds the lib, then runs Cypress CT
 cd iotixng     && npm run test:component   # builds the lib, then runs Cypress CT
+
+cd iotix-react && npm run test:e2e         # builds the lib, starts the demo, runs Cypress E2E
+cd iotixng     && npm run test:e2e         # builds the lib, starts the demo, runs Cypress E2E
 ```
 
 Both repos consume their library as a **built package**, not raw TS source,
@@ -86,14 +99,19 @@ friction found along the way:
 ## Adding a new shared scenario
 
 1. If it needs new program/language shape, add a fixture under `fixtures/`.
-2. Write the scenario as a function in `sharedScenarios.js` taking a
-   `selectors` object (and any other plain data) — no `import React`/
-   `import { Component }`, just `cy.get(...)`.
-3. Call it from both `iotix-react/demo/cypress/component/*.cy.tsx` and
-   `iotixng/cypress/component/*.cy.ts`.
+2. Write the scenario as a function in `sharedScenarios.js` (Component
+   Testing) or `sharedE2EScenarios.js` (E2E) taking a `selectors` object
+   (and any other plain data) — no `import React`/`import { Component }`,
+   just `cy.get(...)`. Accept a small options object for anything that
+   still genuinely differs between the two demos (e.g. a confirm-button
+   label, or a per-repo "commit" callback) rather than hardcoding either
+   repo's specifics.
+3. Call it from both `iotix-react/demo/cypress/component|e2e/*.cy.tsx` and
+   `iotixng/cypress/component|e2e/*.cy.ts`.
 
 ## Current coverage (scaffold, not exhaustive)
 
+Component Testing (`sharedScenarios.js`):
 - Renders the right statement titles in order.
 - Root "+" (add statement) button renders without crashing.
 - Move up/down buttons reorder siblings.
@@ -106,9 +124,20 @@ friction found along the way:
 - Mobile-responsive default: visual editor pane shown, text editor pane
   hidden.
 
+E2E (`sharedE2EScenarios.js`), against each demo's real dev server:
+- Adding a statement via the visual editor produces the expected JSON in
+  the text editor.
+- Typing a program into the text editor updates the visual editor.
+- Removing a statement via the visual editor updates the text editor's
+  JSON.
+- Undoing via the menu reverts the last visual edit.
+
 Not yet covered (left for follow-up, see main bug report for the underlying
-bugs each of these would pin down): program hot-swap after mount, undo/redo,
-manual-sync save flow, text-editor JSON round-trip. These need either a
-richer per-repo mount helper (undo/redo, manual sync) or accept that the
-current implementations are broken and should be written as failing/skipped
-tests until fixed.
+bugs each of these would pin down): program hot-swap after mount,
+manual-sync save flow, expression dialog editing in true E2E (covered at
+the component-test level only), redo (undo's counterpart), text-editor JSON
+round-trip through a full save/reload cycle. Each demo's default program
+and language are hardcoded and there is no client-side way to override them
+without a backend, which also limits E2E scenarios to whatever the default
+language's single addable "cmd" statement (`PowerStrip.toggle`) can
+exercise.

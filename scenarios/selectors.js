@@ -25,6 +25,14 @@ export const common = {
   expressionInput: "input.input-field",
   expressionEllipsisButton: ".pi-ellipsis-h",
   expressionDialogTextarea: ".text-area",
+  // Same ".text-area" class as expressionDialogTextarea - a different alias
+  // because it means something different in E2E scenarios (the whole-program
+  // text editor pane, not a single expression's dialog).
+  programTextArea: ".text-area",
+  addStatementDropdownTrigger: ".p-autocomplete-dropdown",
+  addStatementSuggestionItem: ".p-autocomplete-item",
+  menuToggleTextButton: ".menu-right .toggle-desktop",
+  menuUndoButton: "button:has(.pi-undo)",
 };
 
 // Cosmetic class-name divergences between the two implementations
