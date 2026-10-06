@@ -119,6 +119,28 @@ export function rendersBoundStructureParamValues(sel) {
 }
 
 /**
+ * A write is an ordinary "cmd" statement whose "structure" params are
+ * [reference, value] (see iotix-node's README) - no write-specific editor
+ * support exists. Uses the write.json fixture: asserts the statement renders
+ * with its language label and both bound values, labelled by field name.
+ */
+export function rendersWriteStatement(sel, { title, reference, value }) {
+  rendersStatementTitles(sel, [title]);
+
+  cy.get(sel.accordionHeaderContent).first().should("contain.text", reference).and("contain.text", value);
+
+  cy.get(sel.inputGroup).should(($groups) => {
+    const labels = [...$groups].map((el) => el.querySelector("span")?.textContent.trim());
+    expect(labels).to.deep.equal(["reference", "value"]);
+  });
+
+  cy.get(sel.expressionInput).should(($inputs) => {
+    const values = [...$inputs].map((el) => el.value);
+    expect(values).to.deep.equal([reference, value]);
+  });
+}
+
+/**
  * Regression guard for the expression dialog's syntax check being a no-op:
  * opens the dialog, types a malformed expression, and asserts the error
  * state actually gets set (error class on the textarea + disabled OK

@@ -26,8 +26,10 @@ Sharing the fixtures and the assertion logic means both suites exercise
 ## Layout
 
 - `fixtures/language.json` — a minimal meta-language: a `"_"` root entry, a
-  `compound` statement (`if`, with a condition), and a `cmd` statement
-  (`setValue`, with `array`-type params). Small and hand-auditable, unlike
+  `compound` statement (`if`, with a condition), `cmd` statements
+  (`setValue` with `array`-type params, `setStruct` with `structure`-type
+  params), and a `write` statement declared as a `cmd` with `structure`
+  params `reference` and `value`. Small and hand-auditable, unlike
   the full demo language.
 - `fixtures/language-missing-root.json` — same, minus the `"_"` entry. Used
   to regression-test the root-statement crash bug (see main report, both
@@ -38,7 +40,9 @@ Sharing the fixtures and the assertion logic means both suites exercise
   sibling commands, for reorder/remove tests), `duplicateParams` (one
   command with two identical-valued params, reproducing the state you get
   from clicking "add param" twice without editing — the duplicate-key/
-  trackBy bug precondition).
+  trackBy bug precondition), `write` (a `write` statement — a `cmd` with
+  `structure` params `[reference, value]`, the shape iotix-node evaluates
+  as a parameter write).
 - `scenarios/selectors.js` — CSS selectors for the shared `.accordion`
   statement shell. The base shell (`Statement.tsx` / `iotix-vp-statement`)
   uses **identical class names** on both platforms — verified by reading

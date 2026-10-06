@@ -52,6 +52,23 @@
           ]
         }
       }
+    },
+    "write": {
+      "name": "write",
+      "component": "cmd",
+      "label": "Write",
+      "icon": "pi-pencil",
+      "color": "#ffffff",
+      "backgroundColor": "#7FB77E",
+      "extensions": {
+        "params": {
+          "type": "structure",
+          "defs": [
+            { "name": "reference", "type": "string" },
+            { "name": "value", "type": "string" }
+          ]
+        }
+      }
     }
   },
   "err": {

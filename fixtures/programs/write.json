@@ -1,0 +1,8 @@
+{
+  "block": [
+    {
+      "name": "write",
+      "params": ["1.temperature", "21"]
+    }
+  ]
+}
